@@ -42,12 +42,24 @@ void daccustodian::modifyVoteWeights(name voter, vector<name> oldVotes, vector<n
     dacdir::dac found_dac = dacdir::dac_for_id(dac_id);
     accounts accountstable(found_dac.symbol.get_contract(), voter.value);
 
+    int64_t vote_weight = 0;
     const auto ac = accountstable.find(found_dac.symbol.get_symbol().code().raw());
-    if (ac == accountstable.end()) {
-        print("Voter has no balance therefore no need to update vote weights");
+    if (ac != accountstable.end()) {
+        vote_weight += ac->balance.amount;
+    }
+
+    candidates_table candidates(_self, dac_id.value);
+    auto cand = candidates.find(voter.value);
+    if (cand != candidates.end())
+    {
+        vote_weight += cand->locked_tokens.amount;
+    }
+
+    if (vote_weight == 0) {
+        print("Voter has no vote weight no need to continue");
         return;
     }
-    int64_t vote_weight = ac->balance.amount;
+
     contr_state currentState = contr_state::get_current_state(_self, dac_id);
 
     // New voter -> Add the tokens to the total weight.

@@ -104,6 +104,17 @@ void daccustodian::unstakee(name cand, name dac_id) {
 
     deferredTrans.delay_sec = TRANSFER_DELAY;
     deferredTrans.send(cand.value, get_self());
+
+    //Remove votes for staked tokens
+    votes_table votes_cast_by_members(_self, dac_id.value);
+    auto existingVote = votes_cast_by_members.find(cand.value);
+    if (existingVote != votes_cast_by_members.end())
+    {
+        contr_state currentState = contr_state::get_current_state(_self, dac_id);
+        updateVoteWeights(existingVote->candidates, -quantity.amount, dac_id, currentState);
+        currentState.total_weight_of_votes -= quantity.amount;
+        currentState.save(_self, dac_id);
+    }
 }
 
 void daccustodian::clearstake(name cand, asset new_value, name dac_id) {

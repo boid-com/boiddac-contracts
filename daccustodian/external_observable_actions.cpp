@@ -33,6 +33,16 @@ void daccustodian::capturestake(name from,
             print("Created stake record: ", from);
         }
     }
+    
+    votes_table votes_cast_by_members(_self, dac_id.value);
+    auto existingVote = votes_cast_by_members.find(from.value);
+    if (existingVote != votes_cast_by_members.end())
+    {
+        contr_state currentState = contr_state::get_current_state(_self, dac_id);
+        updateVoteWeights(existingVote->candidates, quantity.amount, dac_id, currentState);
+        currentState.total_weight_of_votes += quantity.amount;
+        currentState.save(_self, dac_id);
+    }
 }
 
 void daccustodian::transferobsv(name from,
