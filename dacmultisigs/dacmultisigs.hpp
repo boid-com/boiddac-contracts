@@ -34,6 +34,17 @@ CONTRACT dacmultisigs: public contract {
         
         typedef multi_index<"proposals"_n, storedproposal> proposals_table;
 
+        struct storedproposal_old
+        {
+            name proposalname;
+            checksum256 transactionid;
+            time_point_sec modifieddate;
+
+            uint64_t primary_key() const { return proposalname.value; }
+        };
+
+        typedef multi_index<"proposals"_n, storedproposal_old> proposals_table_old;
+
     public:
 
         using contract::contract;

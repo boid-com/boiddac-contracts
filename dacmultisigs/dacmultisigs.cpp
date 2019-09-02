@@ -36,7 +36,6 @@ void dacmultisigs::proposede( name proposer, name proposal_name, string metadata
         p.proposer = proposer;
         p.transactionid = trx_id;
         p.modifieddate = time_point_sec(eosio::current_time_point());
-;
     });
 }
 
@@ -119,16 +118,26 @@ void dacmultisigs::clean( name proposer, name proposal_name ) {
 }
 
 void dacmultisigs::cleane( name proposer, name proposal_name, name dac_id ) {
-    auto auth_account = dacdir::dac_for_id(dac_id).account_for_type(dacdir::AUTH);
-    require_auth(auth_account);
 
     time_point_sec dtnow =  time_point_sec(eosio::current_time_point());
     uint32_t two_weeks = 60 * 60 * 24 * 14;
 
-    proposals_table proposals(_self, dac_id.value);
-    auto& proposal = proposals.get(proposal_name.value, "ERR::PROPOSAL_NOT_FOUND::Proposal not found");
+    if (dac_id == get_self()) {
+        proposals_table_old old_props(get_self(), proposer.value);
+        auto &proposal = old_props.get(proposal_name.value, "ERR::PROPOSAL_NOT_FOUND::Proposal not found");
+        check(dtnow > (proposal.modifieddate + two_weeks), "ERR::PROPOSAL_STILL_ACTIVE::This proposal is still active");
 
-    check(dtnow > (proposal.modifieddate + two_weeks), "ERR::PROPOSAL_STILL_ACTIVE::This proposal is still active");
+        old_props.erase(proposal);
 
-    proposals.erase(proposal);
+    } else {
+        auto auth_account = dacdir::dac_for_id(dac_id).account_for_type(dacdir::AUTH);
+        require_auth(auth_account);
+
+        proposals_table proposals(_self, dac_id.value);
+        auto& proposal = proposals.get(proposal_name.value, "ERR::PROPOSAL_NOT_FOUND::Proposal not found");
+
+        check(dtnow > (proposal.modifieddate + two_weeks), "ERR::PROPOSAL_STILL_ACTIVE::This proposal is still active");
+
+        proposals.erase(proposal);
+    }
 }
