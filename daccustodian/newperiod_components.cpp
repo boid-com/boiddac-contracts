@@ -277,10 +277,8 @@ void daccustodian::runnewperiod(string message, name dac_id) {
                  "% to allow new periods to trigger after initial activation.");
     eosio::print("\n\nPercent of current voter engagement: ", percent_of_current_voter_engagement, "\n\n");
 
-    check(currentState.met_initial_votes_threshold == true ||
-          percent_of_current_voter_engagement > configs.initial_vote_quorum_percent,
+    check(currentState.met_initial_votes_threshold,
           "ERR::NEWPERIOD_VOTER_ENGAGEMENT_LOW_ACTIVATE::Voter engagement is insufficient to activate the DAC.");
-    currentState.met_initial_votes_threshold = true;
 
     check(percent_of_current_voter_engagement > configs.vote_quorum_percent,
           "ERR::NEWPERIOD_VOTER_ENGAGEMENT_LOW_PROCESS::Voter engagement is insufficient to process a new period");

@@ -62,7 +62,28 @@ void daccustodian::modifyVoteWeights(name voter, vector<name> oldVotes, vector<n
 
     updateVoteWeights(oldVotes, -vote_weight, dac_id, currentState);
     updateVoteWeights(newVotes, vote_weight, dac_id, currentState);
+    
+    updateThesholdState(currentState, found_dac);
+
     currentState.save(_self, dac_id);
+}
+
+void daccustodian::updateThesholdState(contr_state &currentState, dacdir::dac &dac) {
+    // Update initial threshold met state if it is currently false
+    if (!currentState.met_initial_votes_threshold)
+    {
+        contr_config configs = contr_config::get_current_configs(get_self(), dac.dac_id);
+        auto tokenStats = stats(
+                              dac.symbol.get_contract(),
+                              dac.symbol.get_symbol().code().raw())
+                              .begin();
+        uint64_t token_current_supply = tokenStats->supply.amount;
+        double percent_of_current_voter_engagement = double(currentState.total_weight_of_votes) / double(token_current_supply) * 100.0;
+        if (percent_of_current_voter_engagement > configs.initial_vote_quorum_percent)
+        {
+            currentState.met_initial_votes_threshold = true;
+        }
+    }
 }
 
 permission_level daccustodian::getCandidatePermission(name account, name dac_id){

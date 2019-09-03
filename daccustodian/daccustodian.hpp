@@ -236,11 +236,12 @@ namespace eosdac {
         void removeCustodian(name cust, name internal_dac_id);
         void removeCandidate(name cust, bool lockupStake, name internal_dac_id);
         void allocateCustodians(bool early_election, name internal_dac_id);
+        void updateThesholdState(contr_state &currentState, dacdir::dac &dac);
         bool permissionExists(name account, name permission);
-        bool _check_transaction_authorization(const char* trx_data,     uint32_t trx_size,
-                                                const char* pubkeys_data, uint32_t pubkeys_size,
-                                                const char* perms_data,   uint32_t perms_size);
-                                                
+        bool _check_transaction_authorization(const char *trx_data, uint32_t trx_size,
+                                                const char *pubkeys_data, uint32_t pubkeys_size,
+                                                const char *perms_data, uint32_t perms_size);
+
         permission_level getCandidatePermission(name account, name internal_dac_id);
         void validateUnstake(name code, name cand, name dac_id);
 
