@@ -15,12 +15,12 @@ async function init(contractName){
     cleos -u ${env.endpoints[env.network].rpc} set code ${accounts[env.network][contractName]} \\
     ${path.join(__dirname,`../`,`deployContracts`,contractName,`${contractName}.wasm`)}
     `)
-    if (result) console.log('Contract Deployed:',result.stdout)
+    if (result) console.log('Contract Deployed:',result)
     result = await exec(`
     cleos -u ${env.endpoints[env.network].rpc} set abi ${accounts[env.network][contractName]} \\
     ${path.join(__dirname,`../`,`deployContracts`,contractName,`${contractName}.abi`)}
     `)
-    if (result) console.log('ABI Set:',result.stdout)
+    if (result) console.log('ABI Set:',result)
 
   } catch (error) { err(error) }
 }
