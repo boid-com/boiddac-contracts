@@ -11,7 +11,7 @@ async function init(contractName){
     .catch(err)
     if (result) console.log(result.stdout)
     result = await exec(`
-    cleos -u ${env.endpoints[env.network].rpc} set code ${accounts[env.network].contractName} ../_compiled_contracts/${contractName}/jungle/${contractName}.wasm
+    cleos -u ${env.endpoints[env.network].rpc} set code ${accounts[env.network][contractName]} ../_compiled_contracts/${contractName}/jungle/${contractName}.wasm
     `)
     if (result) console.log(result.stdout)
 
