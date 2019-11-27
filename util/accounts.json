@@ -1,9 +1,9 @@
 {
   "kylin":{
     "daccustodian":"boidcustodia",
-    "eosdactokens":"boiddactoken",
     "dacdirectory":"boiddacdir11",
     "dacescrow":"boidescrow11",
+    "eosdactokens":"boiddactoken",
     "dacmultisigs":"boidmultisig",
     "dacproposals":"boidproposal",
     "distribution":"boiddistribu",
