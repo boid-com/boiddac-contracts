@@ -4,10 +4,10 @@ const accounts = require('./accounts')
 async function init(contractName){
   try {
     if (!contractName) throw(new Error("Missing contract name!"))
-    const result = await exec(` cleos -u ${env.endpoints[env.network].rpc} wallet unlock --password ${env.walletpw}`)
+    const result = await exec(` cleos -u ${env.endpoints[env.network].rpc} wallet unlock --password ${env.walletPW}`)
     console.log(result)
   } catch (error) {
-    console.error(error)
+    console.error(error.toString())
   }
 }
 
