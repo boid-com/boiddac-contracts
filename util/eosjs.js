@@ -6,7 +6,7 @@ function init(keys) {
   if (!keys) keys = []
   const signatureProvider = new JsSignatureProvider(keys)
   const fetch = require('node-fetch')
-  var rpc = new JsonRpc(env.rpcURL, { fetch })
+  var rpc = new JsonRpc(env.endpoints[env.network].rpc, { fetch })
   const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
   return {api,rpc}
 }
