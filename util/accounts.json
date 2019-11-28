@@ -1,11 +1,15 @@
 {
   "kylin":{
-    "daccustodian":"boidcustodia",
-    "dacdirectory":"dacdirectory",
-    "dacescrow":"boidescrow11",
-    "eosdactokens":"boiddactoken",
-    "dacmultisigs":"boidmultisig",
-    "dacproposals":"boidproposal",
+    "authority":"boiddacauth2",
+    "funds":"bo1ddacfunds",
+    "owner":"bo1ddacowner",
+    "custodians":"bo1dcustodia",
+    "service":"bo1daccounts",
+    "directory":"dacdirectory",
+    "escrow":"boidescrow11",
+    "token":"bo1ddactoken",
+    "multisigs":"bo1dmultisig",
+    "proposals":"boidproposal",
     "distribution":"boiddistribu",
     "referendum":"boidreferend"
   }
