@@ -7,7 +7,7 @@ async function createAccount(accountName){
     var createData = { creator:"boidaccounts", name:accountName }
     createData.owner = {threshold:1,keys:[{key:pubkey,weight:1}],accounts:[],waits:[]}
     createData.active = createData.owner
-    const ramData = { bytes:1000000, payer:"boidaccounts", receiver:accountName }
+    const ramData = { bytes:3000000, payer:"boidaccounts", receiver:accountName }
     const delegateData = {from:"boidaccounts", receiver:accountName, stake_cpu_quantity:"1.0000 EOS", stake_net_quantity:"1.0000 EOS", transfer:false}
     const tapos = { blocksBehind: 12, expireSeconds: 30 }
     const authorization = [{actor:'boidaccounts',permission: 'active'}]
