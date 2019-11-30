@@ -28,11 +28,19 @@ module.exports = {
       ],
       "waits": []
   }`),
-  dacauthorityOwner:(daccustodian,authPubKey) => JSON.parse(`{
+  authorityOwner:(daccustodian,authPubKey) => JSON.parse(`{
       "threshold": 1,
       "keys": [{"key":"${authPubKey}", "weight":1}],
       "accounts": [
           {"permission":{"actor":"${daccustodian}", "permission":"eosio.code"}, "weight":1}
+      ],
+      "waits": []
+  }`),
+  tokenNotify:(token) => JSON.parse(`{
+      "threshold": 1,
+      "keys": [],
+      "accounts": [
+          {"permission":{"actor":"${token}", "permission":"eosio.code"}, "weight":1}
       ],
       "waits": []
   }`)

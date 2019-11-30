@@ -61,11 +61,23 @@ async function initAuth(){
   }
 }
 
-
-
-
 async function resignToken(){
 try {
+  const contract = acct('token')
+  const authorization = [{actor:contract,permission: 'owner'}]
+  const account = 'eosio'
+  const result = await api.transact({
+    actions: [
+      { account, name: "updateauth", 
+        data:{ 
+          account:contract, permission:"notify", parent:"active", 
+          auth:per.tokenNotify(acct('token'))
+        }, authorization 
+      }
+    ]
+  },tapos)
+  console.log(result.transaction_id)
+  await sleep(5000)
   await resigntoAuth(acct('token'))
 } catch (error) {
   return Promise.reject(error.toString())
@@ -147,8 +159,59 @@ async function setupTierActions(){
     const result = await api.transact({
       actions: [ 
         linkAuth('high',acct('custodians'),''),
-        // linkAuth('high',acct('custodians'),'')
+        linkAuth('med',acct('custodians'),'firecust'),
+        linkAuth('med',acct('custodians'),'firecand'),
+        linkAuth('one',acct('multisigs'),'')
       ]},tapos)
+    console.log(result.transaction_id)
+  } catch (error) {
+    return Promise.reject(error.toString())
+  }
+}
+
+async function setupTokenActions(){
+  try {
+    const contract = acct('token')
+    const authorization = [{actor:contract,permission: 'active'}]
+    const account = 'eosio'
+    const linkAuth = (requirement,code,type) => {
+      return { account, name: "linkauth", data:{ account:contract, requirement, code, type }, authorization }
+    }
+    const result = await api.transact({
+      actions: [ 
+        linkAuth('notify',acct('custodians'),'balanceobsv'),
+        linkAuth('notify',acct('custodians'),'capturestake'),
+        linkAuth('notify',acct('custodians'),'stakeobsv'),
+        linkAuth('notify',acct('custodians'),'transferobsv'),
+        linkAuth('notify',acct('custodians'),'refund')
+      ]},tapos)
+    console.log(result.transaction_id)
+  } catch (error) {
+    return Promise.reject(error.toString())
+  }
+}
+
+async function finishAuth(){
+  try {
+    const contract = acct('authority')
+    const authorization = [{actor:contract,permission: 'owner'}]
+    const account = 'eosio'
+    const result = await api.transact({
+      actions: [
+        { account, name: "updateauth", 
+          data:{
+            account:contract, permission:"active", parent:"owner", 
+            auth:per.authorityActive(acct('authority'),'EOS7PE114KQs5MamHcH4LZTZN57NLwFekAQs89zzfMVkLfBtrxoZA')
+          }, authorization 
+        },
+        { account, name: "updateauth", 
+          data:{
+            account:contract, permission:"owner", parent:"", 
+            auth:per.authorityOwner(acct('authority'),'EOS7PE114KQs5MamHcH4LZTZN57NLwFekAQs89zzfMVkLfBtrxoZA')
+          }, authorization 
+        },
+      ]
+    },tapos)
     console.log(result.transaction_id)
   } catch (error) {
     return Promise.reject(error.toString())
@@ -170,6 +233,10 @@ async function all(){
     await resignCustodians()
     console.log('\nSetup Tier Actions...')
     await setupTierActions()
+    console.log('\nSetup Token Actions...')
+    await setupTokenActions()
+    console.log('\nfinish Auth...')
+    await finishAuth()
   } catch (error) {console.error(error.toString())}
 }
 
@@ -177,7 +244,7 @@ async function all(){
 
 
 // setupMsigPermissions(process.argv[2]).catch(console.log)
-const methods = {initAuth,resignToken,resignMsig,all,resignOwner,resignCustodians,setupTierActions}
+const methods = {initAuth,resignToken,resignMsig,all,resignOwner,resignCustodians,setupTierActions,finishAuth,setupTokenActions}
 
 module.exports = methods
 

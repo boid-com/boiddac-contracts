@@ -35,7 +35,7 @@ const refs = [
 
 const data = {
   title: 'Boid Test DAC',
-  dac_id:'boidtestdac',
+  dac_id:'boidtestdac2',
   dac_symbol:{contract:acct('token'), symbol:"4,BOID"},
   owner:acct('owner'),
   accounts,refs
