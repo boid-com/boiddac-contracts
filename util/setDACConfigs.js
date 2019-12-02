@@ -7,21 +7,25 @@ const per = require('./permissions')
 const accts = require('./accounts.json')
 const acct = (name) => accts[env.network][name]
 const sleep = ms => new Promise(res => setTimeout(res, ms))
+const ms = require('human-interval')
+
+const dac_id = 'boidtestdac2'
+
 
 const electionsConfig = {
-  dac_id:"boidtestdac2",
+  dac_id,
   newconfig: {
-    auth_threshold_high:8,
-    auth_threshold_mid:6,
-    auth_threshold_low:3,
+    auth_threshold_high:4,
+    auth_threshold_mid:3,
+    auth_threshold_low:2,
     lockup_release_time_delay:100,
     lockupasset:{
       contract:"bo1ddactoken",
       quantity:"1000000.0000 BOID"
     },
     maxvotes:1,
-    numelected:9,
-    periodlength:604800,
+    numelected:5,
+    periodlength:6048,
     requested_pay_max:{
       contract:"eosio.token",
       quantity:"0.0000 EOS"
@@ -33,7 +37,7 @@ const electionsConfig = {
 }
 
 const proposalsConfig = {
-  dac_id: "boidtestdac2",
+  dac_id,
   new_config:{
     approval_expiry: 2592000,
     escrow_expiry: 2592000,

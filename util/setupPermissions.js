@@ -207,7 +207,7 @@ async function finishAuth(){
         { account, name: "updateauth", 
           data:{
             account:contract, permission:"owner", parent:"", 
-            auth:per.authorityOwner(acct('authority'),'EOS7PE114KQs5MamHcH4LZTZN57NLwFekAQs89zzfMVkLfBtrxoZA')
+            auth:per.authorityOwner(acct('custodians'),'EOS7PE114KQs5MamHcH4LZTZN57NLwFekAQs89zzfMVkLfBtrxoZA')
           }, authorization 
         },
       ]

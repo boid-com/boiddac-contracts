@@ -26,7 +26,7 @@ const accounts = [
   {key:5,value:acct('service')},
   {key:6,value:acct('proposals')},
   {key:7,value:acct('escrow')},
-  {key:9,value:acct('authority')}
+  // {key:9,value:acct('authority')}
 ]
 
 const refs = [

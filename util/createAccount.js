@@ -16,9 +16,9 @@ async function createAccount(accountName){
     const api = eosjs([dacKey]).api
     const accountCreated = await api.transact({
       actions: [
-        { account, name: "newaccount", data:createData, authorization },
-        { account, name: "buyrambytes", data:ramData, authorization },
-        { account, name: "delegatebw", data:delegateData, authorization },
+        // { account, name: "newaccount", data:createData, authorization },
+        // { account, name: "buyrambytes", data:ramData, authorization },
+        // { account, name: "delegatebw", data:delegateData, authorization },
         { account:"bo1ddactoken", name: "issue", data:{to:accountName,quantity:"5000000.0000 BOID", memo:"welcome to boiddac"}, authorization },
         // { account:"bo1ddactoken", name: "issue", data:{to:accountName,quantity:"10000000.0000 BOID", memo:"welcome to boiddac"}, authorization }
       ]
